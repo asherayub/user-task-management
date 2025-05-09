@@ -13,7 +13,6 @@ import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings.tsx";
-import App from "./App.tsx";
 import Login from "./pages/Login";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
@@ -24,9 +23,23 @@ createRoot(document.getElementById("root")!).render(
       <ContextProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Navigate to="/app/dashboard" replace />
+                </RequireAuth>
+              }
+            />
 
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/login"
+              element={
+                <RequireNoAuth>
+                  <Login />
+                </RequireNoAuth>
+              }
+            />
 
             <Route
               path="/app"
@@ -53,4 +66,12 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
   return auth.isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+}
+
+function RequireNoAuth({ children }: { children: React.ReactNode }) {
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+  return !auth.isAuthenticated ? <>{children}</> : <Navigate to="/app/dashboard" />;
 }
