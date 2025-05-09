@@ -1,18 +1,20 @@
-// components/TaskCard.tsx
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FiEdit2, FiTrash2, FiCheckCircle, FiClock, FiX } from "react-icons/fi";
 import { format } from "date-fns";
+import { AuthContext } from "../context/AuthContext";
+
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  assignedTo: string;
+  status: "Not Started" | "In Progress" | "Completed";
+  updatedAt: string;
+}
 
 interface TaskCardProps {
-  task: {
-    id: string;
-    title: string;
-    description: string;
-    assignedTo: string;
-    status: "Not Started" | "In Progress" | "Completed";
-    updatedAt: string;
-  };
-  onEdit?: (updatedTask: typeof task) => void;
+  task: Task;
+  onEdit?: (updatedTask: Task) => void;
   onDelete?: (id: string) => void;
   onStatusChange?: (id: string, newStatus: string) => void;
 }
@@ -25,6 +27,7 @@ const TaskCard = ({
 }: TaskCardProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
+  const auth = useContext(AuthContext);
 
   const statusColors = {
     "Not Started": "bg-gray-100 text-gray-800",
@@ -66,7 +69,7 @@ const TaskCard = ({
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-medium text-lg text-gray-800">{task.title}</h3>
             <span
-              className={`text-xs px-2 py-1 rounded-full ${
+              className={`text-xs px-2 min-w-max py-1 rounded-full ${
                 statusColors[task.status]
               } flex items-center`}
             >
@@ -93,7 +96,7 @@ const TaskCard = ({
                 </button>
               )}
 
-              {onEdit && (
+              {auth?.userType === "admin" && onEdit && (
                 <button
                   onClick={() => setIsEditModalOpen(true)}
                   className="p-1 cursor-pointer text-blue-600 hover:bg-blue-50 rounded"
@@ -103,7 +106,7 @@ const TaskCard = ({
                 </button>
               )}
 
-              {onDelete && (
+              {auth?.userType === "admin" && onDelete && (
                 <button
                   onClick={() => onDelete(task.id)}
                   className="p-1 cursor-pointer text-red-600 hover:bg-red-50 rounded"

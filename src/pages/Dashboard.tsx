@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import Context from "../context/Context";
 import TaskCard from "../components/TaskCard";
 import { FiFilter, FiX, FiPlus } from "react-icons/fi";
+import { AuthContext } from "../context/AuthContext";
 
 interface Task {
   id: string;
@@ -13,7 +14,12 @@ interface Task {
 }
 
 const Dashboard = () => {
-  const { tasks, setTasks } = useContext(Context);
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error("Context must be used within a ContextProvider");
+  }
+  const { tasks, setTasks } = context;
+
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const [showFilters, setShowFilters] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -23,6 +29,11 @@ const Dashboard = () => {
     assignedTo: "",
     status: "Not Started",
   });
+
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
 
   const handleStatusChange = (id: string, newStatus: string) => {
     setTasks(
@@ -56,7 +67,7 @@ const Dashboard = () => {
       id: Date.now().toString(),
       updatedAt: new Date().toISOString(),
     };
-    setTasks([...tasks, task]);
+    setTasks([task, ...tasks]);
     setNewTask({
       title: "",
       description: "",
@@ -88,17 +99,19 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-2 sm:p-6">
+    <div className="p-2 sm:p-6 w-full">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Tasks</h2>
         <div className="flex gap-4">
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            <FiPlus />
-            <span>New Task</span>
-          </button>
+          {auth.userType === "admin" && (
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex cursor-pointer items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <FiPlus />
+              <span>New Task</span>
+            </button>
+          )}
           <div className="relative">
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -184,7 +197,6 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Create Task Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/10 backdrop-blur-sm bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md">

@@ -2,33 +2,55 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ContextProvider } from "./context/Context.tsx";
+import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
-import Tasks from "./pages/Tasks.tsx";
 import Settings from "./pages/Settings.tsx";
 import App from "./App.tsx";
+import Login from "./pages/Login";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ContextProvider>
-      <Router>
-        <Routes>
-          {/* Home/landing page */}
-          <Route path="/" element={<App />} />
+    <AuthProvider>
+      <ContextProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<App />} />
 
-          {/* App routes with layout */}
-          <Route path="/app" element={<Layout />}>
-            <Route index element={<Dashboard />} /> {/* /app */}
-            <Route path="dashboard" element={<Dashboard />} />{" "}
-            {/* /app/dashboard */}
-            <Route path="tasks" element={<Tasks />} /> {/* /app/tasks */}
-            <Route path="settings" element={<Settings />} />{" "}
-            {/* /app/settings */}
-          </Route>
-        </Routes>
-      </Router>
-    </ContextProvider>
+            <Route path="/login" element={<Login />} />
+
+            <Route
+              path="/app"
+              element={
+                <RequireAuth>
+                  <Layout />
+                </RequireAuth>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </Router>
+      </ContextProvider>
+    </AuthProvider>
   </StrictMode>
 );
+
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error("AuthContext must be used within an AuthProvider");
+  }
+  return auth.isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+}
