@@ -1,54 +1,96 @@
-# React + TypeScript + Vite
+# User Task Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based task management application with user authentication and role-based access control. The application allows users to create, view, edit, and delete tasks, with different permissions for admin and regular users.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔐 JWT-based authentication
+- 👥 Two user types: Admin and Regular User
+- 📋 Task management (Create, Read, Update, Delete)
+- 🎯 Task status tracking (Not Started, In Progress, Completed)
+- 👤 User-specific task views
+- 🎨 Modern UI with Tailwind CSS
+- 📱 Responsive design
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Before you begin, ensure you have the following installed:
+- Node.js (v14.0.0 or higher)
+- npm (v6.0.0 or higher)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting Started
+
+1. Clone the repository:
+```bash
+git clone https://github.com/asherayub/user-task-management.git
+cd user-task-management
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to:
+```
+http://localhost:5173
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+
+## Project Structure
+
+```
+src/
+├── assets/         # Static assets
+├── components/     # Reusable components
+├── context/        # React context providers
+├── pages/          # Page components
+├── App.tsx         # Main App component
+├── main.tsx        # Application entry point
+└── tasks.json      # Mock task data
+```
+
+## Authentication
+
+The application uses a mock authentication system with the following credentials:
+
+### Admin User
+- Username: `admin`
+- Password: `admin123`
+
+### Regular User
+- Username: `user`
+- Password: `user123`
+
+## Features by User Type
+
+### Admin
+- Create new tasks
+- Edit existing tasks
+- Delete tasks
+- View all tasks
+- Change task status
+
+### Regular User
+- View tasks
+- Change task status
+- Filter tasks by status
+
+## Technologies Used
+
+- React
+- TypeScript
+- Tailwind CSS
+- React Router
+- React Icons
+- date-fns
