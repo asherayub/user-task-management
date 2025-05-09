@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "Complete project proposal",
+    "description": "Draft and submit the project proposal for client review",
+    "assignedTo": "Ali",
+    "status": "In Progress",
+    "updatedAt": "2025-05-09T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Schedule team meeting",
+    "description": "Coordinate with team members for weekly sync-up",
+    "assignedTo": "Kazim",
+    "status": "To Do",
+    "updatedAt": "2025-05-09T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Review design mockups",
+    "description": "Provide feedback on the latest design mockups",
+    "assignedTo": "Zubair",
+    "status": "Completed",
+    "updatedAt": "2025-05-09T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Update documentation",
+    "description": "Update project documentation with recent changes",
+    "assignedTo": "Kashif",
+    "status": "To Do",
+    "updatedAt": "2025-05-09T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Prepare client presentation",
+    "description": "Create slides for the upcoming client presentation",
+    "assignedTo": "Ash",
+    "status": "To Do",
+    "updatedAt": "2025-05-09T00:00:00.000Z"
+  }
+]
