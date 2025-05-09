@@ -99,7 +99,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-2 sm:p-6 w-full">
+    <div className="p-2 sm:p-6 w-full overflow-y-auto">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Tasks</h2>
         <div className="flex gap-4">
